@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% from "_pagination.html" import pager %}
+{% block content %}
+  {% set is_admin = current_user.is_authenticated and current_user.is_admin %}
+  <div class="page-head">
+    <h1>Announcements</h1>
+    {% if is_admin %}
+    <a class="btn btn-sm" href="{{ url_for('announcements.new') }}">New announcement</a>
+    {% endif %}
+  </div>
+
+  {% for a in items.items %}
+  <article class="announcement" id="a{{ a.id }}">
+    <p class="post-meta">
+      <span class="badge badge-admin">Admin</span>
+      <span class="post-author">{{ a.author.username }}</span>
+      <time datetime="{{ a.date_posted.strftime('%Y-%m-%d') }}">{{ a.date_posted|pretty_date }}</time>
+    </p>
+    <h2 class="post-title">{{ a.title }}</h2>
+    <p class="post-content">{{ a.content }}</p>
+    {% if is_admin %}
+    <div class="post-actions">
+      <a class="btn btn-sm btn-outline" href="{{ url_for('announcements.edit', announcement_id=a.id) }}">Edit</a>
+      <button class="btn btn-sm btn-danger-outline" type="button" data-open-dialog="delete-a{{ a.id }}">Delete</button>
+    </div>
+    <dialog id="delete-a{{ a.id }}" aria-labelledby="delete-title-{{ a.id }}">
+      <h2 id="delete-title-{{ a.id }}">Delete this announcement?</h2>
+      <p>"{{ a.title }}" will be removed for everyone. This can't be undone.</p>
+      <form method="POST" action="{{ url_for('announcements.delete', announcement_id=a.id) }}" class="dialog-actions">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button class="btn btn-danger" type="submit">Delete announcement</button>
+        <button class="btn btn-quiet" type="button" data-close-dialog>Keep it</button>
+      </form>
+    </dialog>
+    {% endif %}
+  </article>
+  {% else %}
+  <section class="panel empty">
+    <h2>No announcements yet</h2>
+    <p>When an admin publishes news, it will show up here.</p>
+    {% if is_admin %}<a class="btn" href="{{ url_for('announcements.new') }}">Write the first one</a>{% endif %}
+  </section>
+  {% endfor %}
+  {{ pager(items, 'announcements.index') }}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% from "_fields.html" import field %}
+{% block content %}
+<section class="panel">
+  <div class="account-head">
+    <img id="avatar-preview" class="avatar avatar-lg" src="{{ image_file }}" alt="Your profile picture" width="120" height="120" />
+    <div>
+      <h1>{{ current_user.username }}{% if current_user.is_admin %} <span class="badge badge-admin">Admin</span>{% endif %}</h1>
+      <p class="muted">{{ current_user.email }}</p>
+    </div>
+  </div>
+  <form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <h2 class="form-title">Account info</h2>
+    {{ field(form.username, autocomplete='username') }}
+    {{ field(form.email, autocomplete='email') }}
+    {{ field(form.picture, accept='.jpg,.jpeg,.png') }}
+    {{ form.submit(class='btn') }}
+  </form>
+</section>
+{% endblock %}

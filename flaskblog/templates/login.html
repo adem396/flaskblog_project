@@ -1,26 +1,20 @@
-{% extends "layout.html" %} {% block content %}
-<div>
-  <form action="" method="post">
+{% extends "layout.html" %}
+{% from "_fields.html" import field %}
+{% block content %}
+<section class="panel">
+  <form method="POST" action="">
     {{ form.hidden_tag() }}
-    <fieldset>
-      <legend>log in</legend>
-      <div class="form">
-        {{ form.email.label(class="z8") }} {{ form.email(class="z6") }}
-      </div>
-      <div class="form">
-        {{ form.password.label(class="z8") }} {{ form.password(class="z6") }}
-      </div>
-      <div class="form">
-        {{ form.remember.label(class="z8") }} {{ form.remember() }}
-      </div>
-    </fieldset>
-    <div class="form">{{ form.submit(class="z5") }}</div>
+    <h1 class="form-title">Log in</h1>
+    {{ field(form.email, autocomplete='email') }}
+    {{ field(form.password, autocomplete='current-password') }}
+    <div class="field-check">
+      {{ form.remember() }} {{ form.remember.label }}
+    </div>
+    {{ form.submit(class='btn') }}
   </form>
-  <div>
-    <small class="z4">
-      need an account?
-      <a href="{{ url_for('regestration') }}">sign up</a>
-    </small>
-  </div>
-</div>
+  <p class="form-links">
+    <a href="{{ url_for('users.reset_request') }}">Forgot your password?</a><br />
+    Need an account? <a href="{{ url_for('users.register') }}">Sign up</a>
+  </p>
+</section>
 {% endblock %}

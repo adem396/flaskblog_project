@@ -1,5 +1,26 @@
-{% extends "layout.html"%} {% block content %} {% for i in posts %}
-<h1>{{i.title}}</h1>
-<p>by {{i.author}} on {{i.date_posted}}</p>
-<p>{{i.content}}</p>
-{% endfor %} {% endblock %}
+{% extends "layout.html" %}
+{% from "_post.html" import card %}
+{% from "_pagination.html" import pager %}
+{% block content %}
+  {% if notice %}
+  <a class="notice" href="{{ url_for('announcements.index') }}#a{{ notice.id }}">
+    <span class="notice-label">Announcement</span>
+    <span class="notice-title">{{ notice.title }}</span>
+    <span class="notice-date">{{ notice.date_posted|pretty_date }}</span>
+  </a>
+  {% endif %}
+  {% for post in posts.items %}
+    {{ card(post) }}
+  {% else %}
+  <section class="panel empty">
+    <h1>No posts yet</h1>
+    <p>Nobody has written anything here yet. Yours could be the first.</p>
+    {% if current_user.is_authenticated %}
+    <a class="btn" href="{{ url_for('posts.new_post') }}">Write a post</a>
+    {% else %}
+    <a class="btn" href="{{ url_for('users.register') }}">Create an account</a>
+    {% endif %}
+  </section>
+  {% endfor %}
+  {{ pager(posts, 'main.home') }}
+{% endblock %}

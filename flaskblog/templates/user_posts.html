@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% from "_post.html" import card %}
+{% from "_pagination.html" import pager %}
+{% block content %}
+  <h1 class="page-title">{{ user.username }} <span class="muted">({{ posts.total }} post{{ '' if posts.total == 1 else 's' }})</span></h1>
+  {% for post in posts.items %}
+    {{ card(post) }}
+  {% else %}
+  <section class="panel empty">
+    <p>{{ user.username }} hasn't posted anything yet.</p>
+  </section>
+  {% endfor %}
+  {{ pager(posts, 'users.user_posts', username=user.username) }}
+{% endblock %}

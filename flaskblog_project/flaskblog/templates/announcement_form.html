@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% from "_fields.html" import field %}
+{% block content %}
+<section class="panel">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <h1 class="form-title">{{ legend }}</h1>
+    {{ field(form.title) }}
+    {{ field(form.content, rows=10) }}
+    {{ form.submit(class='btn') }}
+    <a class="btn btn-quiet" href="{{ url_for('announcements.index') }}">Cancel</a>
+  </form>
+</section>
+{% endblock %}

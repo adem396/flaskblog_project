@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% from "_fields.html" import field %}
+{% block content %}
+<section class="panel">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <h1 class="form-title">Reset your password</h1>
+    <p class="muted">Enter the email you signed up with and we'll send you a link to choose a new password.</p>
+    {{ field(form.email, autocomplete='email') }}
+    {{ form.submit(class='btn') }}
+  </form>
+  <p class="form-links"><a href="{{ url_for('users.login') }}">Back to log in</a></p>
+</section>
+{% endblock %}

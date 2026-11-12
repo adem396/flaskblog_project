@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% from "_event.html" import row %}
+{% block content %}
+  <div class="page-head">
+    <h1>{{ chosen|pretty_date }}</h1>
+    <div class="page-tools">
+      <a class="btn btn-sm btn-outline" href="{{ url_for('events.month_view', year=chosen.year, month=chosen.month) }}">Back to {{ chosen.strftime('%B') }}</a>
+      {% if current_user.is_authenticated %}
+      <a class="btn btn-sm" href="{{ url_for('events.new_event', date=chosen.isoformat()) }}">Add event on this day</a>
+      {% else %}
+      <a class="btn btn-sm" href="{{ url_for('users.login', next=url_for('events.new_event', date=chosen.isoformat())) }}">Log in to add events</a>
+      {% endif %}
+    </div>
+  </div>
+  {% for ev in items %}
+    {{ row(ev, today) }}
+  {% else %}
+  <section class="panel empty">
+    <h2>Nothing planned on this day</h2>
+    <p>Add a release, a deadline or anything else you want others to see coming.</p>
+  </section>
+  {% endfor %}
+{% endblock %}

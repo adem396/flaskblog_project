@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% from "_event.html" import tile, badge %}
+{% block content %}
+  <article class="panel event-detail cat-{{ event.category }}">
+    <div class="event-head">
+      {{ tile(event.event_date) }}
+      <div>
+        <div class="tl-tags">
+          {{ badge(event) }}
+          {% if not event.is_public %}<span class="badge badge-private">Private</span>{% endif %}
+        </div>
+        <h1>{{ event.title }}</h1>
+        <p class="tl-when">{{ event.date_range }}</p>
+      </div>
+    </div>
+    {% if event.description %}
+    <p class="post-content">{{ event.description }}</p>
+    {% endif %}
+    <p class="tl-by">
+      Added by <a href="{{ url_for('users.user_posts', username=event.author.username) }}">{{ event.author.username }}</a>
+    </p>
+
+    <div class="post-actions">
+      <a class="btn btn-sm btn-outline" href="{{ url_for('events.month_view', year=event.event_date.year, month=event.event_date.month) }}">Back to the calendar</a>
+      {% if current_user.is_authenticated and event.user_id == current_user.id %}
+      <a class="btn btn-sm btn-outline" href="{{ url_for('events.edit_event', event_id=event.id) }}">Edit event</a>
+      {% endif %}
+      {% if current_user.is_authenticated and (event.user_id == current_user.id or current_user.is_admin) %}
+      <button class="btn btn-sm btn-danger-outline" type="button" data-open-dialog="delete-dialog">Delete event</button>
+      {% endif %}
+    </div>
+  </article>
+
+  {% if current_user.is_authenticated and (event.user_id == current_user.id or current_user.is_admin) %}
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">Delete this event?</h2>
+    <p>"{{ event.title }}" will be removed from the calendar. This can't be undone.</p>
+    <form method="POST" action="{{ url_for('events.delete_event', event_id=event.id) }}" class="dialog-actions">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <button class="btn btn-danger" type="submit">Delete event</button>
+      <button class="btn btn-quiet" type="button" data-close-dialog>Keep event</button>
+    </form>
+  </dialog>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% macro card(post, detail=False) %}
+<article class="post">
+  <img class="avatar" src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}" alt="" width="48" height="48" />
+  <div class="post-main">
+    <p class="post-meta">
+      <a class="post-author" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+      {% if post.author.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}
+      <time datetime="{{ post.date_posted.strftime('%Y-%m-%d') }}">{{ post.date_posted|pretty_date }}</time>
+    </p>
+    {% if detail %}
+    <h1 class="post-title">{{ post.title }}</h1>
+    {% else %}
+    <h2 class="post-title"><a href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+    {% endif %}
+    <p class="post-content">{{ post.content }}</p>
+  </div>
+</article>
+{% endmacro %}

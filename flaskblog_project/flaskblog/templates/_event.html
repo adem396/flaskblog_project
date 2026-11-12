@@ -1,0 +1,30 @@
+{# Small building blocks shared by the calendar, day, timeline and sidebar #}
+
+{% macro tile(d) %}
+<time class="date-tile" datetime="{{ d.isoformat() }}"><span class="m">{{ d.strftime('%b') }}</span><span class="d">{{ d.day }}</span></time>
+{% endmacro %}
+
+{% macro badge(ev) %}
+<span class="badge cat-{{ ev.category }}">{{ ev.category_label }}</span>
+{% endmacro %}
+
+{% macro chip(ev) %}
+<a class="chip cat-{{ ev.category }}" href="{{ url_for('events.detail', event_id=ev.id) }}" title="{{ ev.title }} ({{ ev.category_label }})"><span class="chip-dot"></span><span class="chip-title">{{ ev.title }}</span></a>
+{% endmacro %}
+
+{% macro row(ev, today) %}
+<article class="tl-item reveal cat-{{ ev.category }}">
+  {{ tile(ev.event_date) }}
+  <div class="tl-main">
+    <div class="tl-tags">
+      {{ badge(ev) }}
+      {% if ev.event_date < today and ev.end_date >= today %}<span class="badge badge-live">Happening now</span>{% endif %}
+      {% if not ev.is_public %}<span class="badge badge-private">Private</span>{% endif %}
+    </div>
+    <h3 class="tl-title"><a href="{{ url_for('events.detail', event_id=ev.id) }}">{{ ev.title }}</a></h3>
+    <p class="tl-when">{{ ev.date_range }}</p>
+    {% if ev.description %}<p class="tl-desc">{{ ev.description|truncate(160) }}</p>{% endif %}
+    <p class="tl-by">Added by <a href="{{ url_for('users.user_posts', username=ev.author.username) }}">{{ ev.author.username }}</a></p>
+  </div>
+</article>
+{% endmacro %}

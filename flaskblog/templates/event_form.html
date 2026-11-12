@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% from "_fields.html" import field %}
+{% block content %}
+<section class="panel">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <h1 class="form-title">{{ legend }}</h1>
+    {{ field(form.title, placeholder='For example: New novel comes out') }}
+    {{ field(form.category) }}
+    <div class="field-row">
+      {{ field(form.event_date) }}
+      {{ field(form.end_date) }}
+    </div>
+    {{ field(form.description, rows=5) }}
+    <div class="field-check">
+      {{ form.is_public() }} {{ form.is_public.label }}
+    </div>
+    <p class="muted hint">Untick this to keep the event on your own calendar only.</p>
+    {{ form.submit(class='btn') }}
+  </form>
+</section>
+{% endblock %}

@@ -1,18 +1,50 @@
-{% extends "layout.html" %} {% block content %}
-<h1>About This Blog</h1>
-<p>
-  Welcome! This is a blogging platform where anyone can create an account,
-  log in, and share their thoughts through posts. Whether you're here to
-  read, write, or just explore, this space is built to make sharing ideas
-  simple and easy.
-</p>
-<p>
-  Once you register, you'll be able to create your own posts, which will
-  appear on the home page alongside posts from other users. You can edit
-  or delete your own posts at any time after logging in.
-</p>
-<p>
-  Have a look around, create an account, and start sharing your own posts
-  with the community.
-</p>
+{% extends "layout.html" %}
+{% block content %}
+<section class="panel prose">
+  <h1>About This Blog</h1>
+  <p>
+    Welcome! This is a blogging platform where anyone can create an account,
+    log in, and share their thoughts through posts. Whether you're here to
+    read, write, or just explore, this space is built to make sharing ideas
+    simple and easy.
+  </p>
+
+  <h2>Posts</h2>
+  <p>
+    Once you register, you can create your own posts, which appear on the home
+    page alongside posts from other users. You can edit or delete your own
+    posts at any time after logging in, and add a profile picture from your
+    account page.
+  </p>
+
+  <h2>Announcements</h2>
+  <p>
+    Important news from the site's admins is published on the
+    <a href="{{ url_for('announcements.index') }}">Announcements</a> page. The
+    latest one is also pinned at the top of the home page, so you never miss it.
+    Only admins can write announcements, but everyone can read them.
+  </p>
+
+  <h2>Calendar</h2>
+  <p>
+    The <a href="{{ url_for('events.month_view') }}">Calendar</a> is a shared
+    place to keep track of dates that matter: when a book comes out, when an
+    exam or a deadline is due, or when a meeting takes place. Anyone with an
+    account can add their own events, either for a single day or for a period
+    of several days, and give each one a type such as Release, Deadline, Exam
+    or Meeting.
+  </p>
+  <p>
+    You can browse the calendar month by month, or switch to the
+    <a href="{{ url_for('events.timeline') }}">Timeline</a> to see everything
+    that is coming up in order. Events are visible to everyone by default, but
+    you can keep one private so that only you see it. Only the person who added
+    an event can edit it.
+  </p>
+
+  <p>
+    Have a look around, create an account, and start sharing your own posts
+    and dates with the community.
+  </p>
+</section>
 {% endblock %}

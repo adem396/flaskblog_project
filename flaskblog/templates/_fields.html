@@ -1,0 +1,10 @@
+{# One labelled form field with its error messages. Extra keyword args become HTML attributes. #}
+{% macro field(f) %}
+<div class="field{% if f.errors %} has-error{% endif %}">
+  {{ f.label }}
+  {{ f(class='input', **dict(kwargs, **({'aria-invalid': 'true'} if f.errors else {}))) }}
+  {% for error in f.errors %}
+  <p class="field-error">{{ error }}</p>
+  {% endfor %}
+</div>
+{% endmacro %}

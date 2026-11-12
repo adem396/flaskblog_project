@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% from "_post.html" import card %}
+{% block content %}
+  {{ card(post, detail=True) }}
+  {% if current_user.is_authenticated and post.user_id == current_user.id %}
+  <div class="post-actions">
+    <a class="btn btn-outline" href="{{ url_for('posts.update_post', post_id=post.id) }}">Edit post</a>
+    <button class="btn btn-danger-outline" type="button" data-open-dialog="delete-dialog">Delete post</button>
+  </div>
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">Delete this post?</h2>
+    <p>"{{ post.title }}" will be removed for good. This can't be undone.</p>
+    <form method="POST" action="{{ url_for('posts.delete_post', post_id=post.id) }}" class="dialog-actions">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <button class="btn btn-danger" type="submit">Delete post</button>
+      <button class="btn btn-quiet" type="button" data-close-dialog>Keep post</button>
+    </form>
+  </dialog>
+  {% endif %}
+{% endblock %}
